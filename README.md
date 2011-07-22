@@ -24,6 +24,12 @@ also, for those of us who are too lazy to type/remember `python -m SimpleHTTPSer
 
 ## installation
 
+for system wide use
+
+    $ cd /usr/local/bin && curl -L http://github.com/seanmoon/httplz/tarball/master | gunzip | tar xvf - --strip=2
+
+otherwise (you'll need rvm or your rubygem installation's bin directory in your PATH)
+
     $ gem install httplz
 
 ## usage
