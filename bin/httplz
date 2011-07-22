@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+require 'webrick'
+require 'optparse'
+
+port = 2999
+
+OptionParser.new do |o|
+  o.banner = "Usage: httplz [directory] [options]"
+  o.on("-p", "--port [PORT]", "Port to run WEBrick on (default 2999)") { |p| port = p }
+  o.on("-h", "--help", "Print this help text") { puts o; exit }
+end.parse!
+
+doc_root = Dir.pwd
+if ARGV[0]
+  doc_root = File.expand_path(ARGV[0]) unless ARGV[0] == ("-p" || "--port")
+end
+
+abort "No directory #{doc_root}, exiting..." unless File.directory?(doc_root)
+puts  "Document root is #{doc_root}, using port #{port}"
+
+server = WEBrick::HTTPServer.new(:DocumentRoot => doc_root, :Port => port)
+['INT', 'TERM'].each { |signal| trap(signal) { server.shutdown } }
+
+server.start
