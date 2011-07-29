@@ -19,7 +19,9 @@ end
 abort "No directory #{doc_root}, exiting..." unless File.directory?(doc_root)
 puts  "Document root is #{doc_root}, using port #{port}"
 
-server = WEBrick::HTTPServer.new(:DocumentRoot => doc_root, :Port => port)
+mime_types = WEBrick::HTTPUtils::DefaultMimeTypes
+mime_types.store 'js', 'application/javascript'
+server = WEBrick::HTTPServer.new(:DocumentRoot => doc_root, :Port => port, :MimeTypes => mime_types)
 ['INT', 'TERM'].each { |signal| trap(signal) { server.shutdown } }
 
 server.start
